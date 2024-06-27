@@ -1,6 +1,6 @@
 # Use the official PHP image based on Alpine
 FROM php:8.3-fpm-alpine
-
+RUN set -ex && apk --no-cache add sudo
 # Install Nginx, necessary PHP extensions, and tools
 RUN apk update && apk add --no-cache \
     nginx \
