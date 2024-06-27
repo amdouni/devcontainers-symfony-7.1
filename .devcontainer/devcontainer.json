@@ -1,0 +1,23 @@
+{
+    "name": "Symfony Dev Container",
+    "dockerFile": "Dockerfile",
+    "context": "..",
+    "appPort": [80],
+    "extensions": [
+        "felixfbecker.php-intellisense",
+        "bmewburn.vscode-intelephense-client",
+        "mehedidracula.php-namespace-resolver",
+        "junstyle.php-cs-fixer"
+    ],
+    "settings": {
+        "terminal.integrated.shell.linux": "/bin/sh",
+        "php.validate.executablePath": "/usr/local/bin/php",
+        "php.executablePath": "/usr/local/bin/php",
+        "composer.executablePath": "/usr/bin/composer"
+    },
+    "postCreateCommand": "composer install",
+    "remoteUser": "symfony",
+    "mounts": [
+        "source=/var/run/docker.sock,target=/var/run/docker.sock,type=bind"
+    ]
+}
