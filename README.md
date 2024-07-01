@@ -21,3 +21,10 @@ Apportez les réponses nécessaires à ce besoin. Pour toute question, demandez 
 Temps estimé de réalisation : 45 minutes
 
 
+2 - Dans le cadre de l'accueil de Marc, le nouveau stagiaire rattaché à l'équipe de développement, il vous est demandé de lui expliquer notre infrastructure Docker et Docker Compose. Le besoin est exprimé ici : https://github.com/amdouni/devcontainers-symfony-7.1/issues/2
+
+Temps estimé de réalisation : 45 minutes
+
+3 - 
+
+
