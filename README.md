@@ -18,13 +18,26 @@ Activités :
 Il vous adresse donc un besoin à travers votre Product Owner. Le besoin est inscrit dans le ticket suivant : https://github.com/amdouni/devcontainers-symfony-7.1/issues/1
 Apportez les réponses nécessaires à ce besoin. Pour toute question, demandez à votre représentant de l'équipe de l'adresser au métiers. 
 
-Temps estimé de réalisation : 45 minutes
+Temps estimé de réalisation : 60 minutes
 
 
 2 - Dans le cadre de l'accueil de Marc, le nouveau stagiaire rattaché à l'équipe de développement, il vous est demandé de lui expliquer notre infrastructure Docker et Docker Compose. Le besoin est exprimé ici : https://github.com/amdouni/devcontainers-symfony-7.1/issues/2
 
 Temps estimé de réalisation : 45 minutes
 
-3 - 
+3 - Myriam est le techlead de l'équipe de développement. Elle cherche une méthode simple de lancer l'application Symfony dans des environnements éphémères. Montrez-lui comment on peut utiliser Github Codespaces pour lancer des applications dans des environnements Dockerisés. 
+Pour ce faire : 
+a - Allez sur l'onglet Code de votre repository Github. 
+b - cherchez le bouton "Use this template" (ou son équivalent en français). Choissez "Open in a codepsace". 
+c - Vérifiez que le code space se lance et attendez quelques minutes. Un éditeur de code apparaitra et en quelques minutes votre environnement est en exécution. 
+
+Explorez librement l'éditeur et les options.
+
+Préparer un slide PPT pour décrire ce processus à Myriam.
+
+Temps estimé de réalisation : 45 min
+
+4 - Anis, le Delivery Manager a fini par valider l'approche CI/CD à travers Github Actions. 
+
 
 
