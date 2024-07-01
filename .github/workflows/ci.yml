@@ -15,12 +15,16 @@ jobs:
     services:
       mysql:
         image: mysql:5.7
-        options: --health-cmd="mysqladmin ping --silent" --health-interval=10s --health-timeout=5s --health-retries=3
         env:
           MYSQL_ROOT_PASSWORD: root
           MYSQL_DATABASE: symfony_test
         ports:
           - 3306:3306
+        options: >-
+          --health-cmd="mysqladmin ping --silent" 
+          --health-interval=10s 
+          --health-timeout=5s 
+          --health-retries=3
 
     env:
       DATABASE_URL: mysql://root:root@127.0.0.1:3306/symfony_test
@@ -29,12 +33,12 @@ jobs:
     - name: Checkout code
       uses: actions/checkout@v2
 
-    - name: Set up PHP
+    - name: Set up PHP 8.2
       uses: shivammathur/setup-php@v2
       with:
-        php-version: '8.1'
+        php-version: '8.2'
         extensions: mbstring, intl, pdo_mysql
-        tools: composer, phpunit, phpstan
+        tools: composer
 
     - name: Install Composer dependencies
       run: composer install --prefer-dist --no-progress --no-suggest --no-interaction
@@ -46,11 +50,60 @@ jobs:
     - name: Run database migrations
       run: php bin/console doctrine:migrations:migrate --env=test --no-interaction
 
+  analyze-static-code:
+    runs-on: ubuntu-latest
+    needs: build
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v2
+
+    - name: Set up PHP 8.2 and tools for static analysis
+      uses: shivammathur/setup-php@v2
+      with:
+        php-version: '8.2'
+        extensions: mbstring, intl, pdo_mysql
+        tools: phpstan
+
+    - name: Install dependencies
+      run: composer install --prefer-dist --no-progress --no-suggest --no-interaction
+
     - name: Run static analysis
       run: vendor/bin/phpstan analyse
+
+  run-unit-tests:
+    runs-on: ubuntu-latest
+    needs: build
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v2
+
+    - name: Set up PHP 8.2 and PHPUnit
+      uses: shivammathur/setup-php@v2
+      with:
+        php-version: '8.2'
+        extensions: mbstring, intl, pdo_mysql
+        tools: phpunit
+
+    - name: Install dependencies
+      run: composer install --prefer-dist --no-progress --no-suggest --no-interaction
 
     - name: Run unit tests
       run: vendor/bin/phpunit
 
+  security-scan:
+    runs-on: ubuntu-latest
+    needs: build
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v2
+
+    - name: Install Symfony CLI
+      run: |
+        curl -sS https://get.symfony.com/cli/installer | bash
+        sudo mv /root/.symfony*/bin/symfony /usr/local/bin/symfony
+
     - name: Run security analysis
-      run: symfony security:check
+      run: symfony check:security
