@@ -48,7 +48,7 @@ jobs:
         echo 'DATABASE_URL="mysql://root:root@127.0.0.1:3306/symfony_test"' > .env.test.local
 
     - name: Run database migrations
-      run: php bin/console doctrine:migrations:migrate --env=test --no-interaction
+      run: php bin/console doctrine:migrations:migrate --no-interaction
 
   analyze-static-code:
     runs-on: ubuntu-latest
