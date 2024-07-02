@@ -37,7 +37,12 @@ Préparer un slide PPT pour décrire ce processus à Myriam.
 
 Temps estimé de réalisation : 45 min
 
-4 - Anis, le Delivery Manager a fini par valider l'approche CI/CD à travers Github Actions. 
+4 - Anis, le Delivery Manager a fini par valider l'approche CI/CD à travers Github Actions. L'équipe devsecops de la filiale "Monde" vous a fourni le script Github Actions pour s'en servir comme base. Vous trouverez ce script ici : https://github.com/amdouni/devcontainers-symfony-7.1/blob/main/.github/workflows/ci.yml
+
+Ce script représente les étapes de la pipeline CI/CD qui contient une étape Build et une Etape Analyses et checks. Dans l'étaps analyse et check, trois jobs se lancerons en parallèle : Analyse Statique, lancement des tests unitaires et le security check. 
+
+Pour lancer la pipeline, il faut faire un push pour déclencher le processus. Une simple modification de ce ReadMe peut faire le nécessaire. 
+
 
 
 
