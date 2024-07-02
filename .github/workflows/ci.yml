@@ -103,7 +103,7 @@ jobs:
     - name: Install Symfony CLI
       run: |
         curl -sS https://get.symfony.com/cli/installer | bash
-        sudo mv symfony /usr/local/bin/symfony
+        sudo mv /home/runner/.symfony5/bin/symfony /usr/local/bin/symfony
 
     - name: Run security analysis
       run: symfony check:security
