@@ -35,13 +35,23 @@ Explorez librement l'éditeur et les options.
 
 Préparer un slide PPT pour décrire ce processus à Myriam.
 
-Temps estimé de réalisation : 45 min
+Temps estimé de réalisation : 45 minutes
 
 4 - Anis, le Delivery Manager a fini par valider l'approche CI/CD à travers Github Actions. L'équipe devsecops de la filiale "Monde" vous a fourni le script Github Actions pour s'en servir comme base. Vous trouverez ce script ici : https://github.com/amdouni/devcontainers-symfony-7.1/blob/main/.github/workflows/ci.yml
 
 Ce script représente les étapes de la pipeline CI/CD qui contient une étape Build et une Etape Analyses et checks. Dans l'étaps analyse et check, trois jobs se lancerons en parallèle : Analyse Statique, lancement des tests unitaires et le security check. 
 
-Pour lancer la pipeline, il faut faire un push pour déclencher le processus. Une simple modification de ce ReadMe peut faire le nécessaire. 
+Pour lancer la pipeline, il faut stimuler un push pour déclencher le processus. Une simple modification de ce ReadMe peut faire le nécessaire par exemple. 
+
+- Commentez le fichier ci.yml pour faciliter à Anis la compréhension de la pipeline.
+- Lancez la pipeline en stimulant un push et rapportez les résultats de la pipeline dans un slide PPT.
+
+  Temps estimé : 45 minutes
+
+A terme de ce labs, vous pouvez supprimer le codespace créé et envoyer vos documents PPT et vos fichiers commentés par email à raouf.amdouni@intervenants.efrei.net.
+
+Bon courage,
+Raouf AMDOUNI
 
 
 
