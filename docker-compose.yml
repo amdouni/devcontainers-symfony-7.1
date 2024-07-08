@@ -4,31 +4,31 @@ services:
   symfony:
     build:
       context: .
-      dockerfile: .devcontainer/Dockerfile
+      dockerfile: .devcontainer/Dockerfile  # Utilise un Dockerfile personnalisé pour construire l'image de l'application Symfony
     volumes:
-      - .:/var/www/html
+      - .:/var/www/html  # Monte le répertoire de travail sur le conteneur
     ports:
-      - "8080:80"
+      - "8080:80"  # Mappe le port 80 du conteneur au port 8080 de l'hôte
     depends_on:
-      - db
-      - redis
+      - db  # Indique que le conteneur symfony dépend du conteneur db
+      - redis  # Indique que le conteneur symfony dépend du conteneur redis
 
   db:
-    image: mariadb:latest
+    image: mariadb:latest  # Utilise l'image officielle MariaDB
     environment:
-      MYSQL_ROOT_PASSWORD: root
-      MYSQL_DATABASE: symfony
-      MYSQL_USER: symfony
-      MYSQL_PASSWORD: symfony
+      MYSQL_ROOT_PASSWORD: root  # Définit le mot de passe root pour MariaDB
+      MYSQL_DATABASE: symfony  # Crée une base de données nommée symfony
+      MYSQL_USER: symfony  # Crée un utilisateur symfony
+      MYSQL_PASSWORD: symfony  # Définit le mot de passe de l'utilisateur symfony
     ports:
-      - "3306:3306"
+      - "3306:3306"  # Mappe le port 3306 du conteneur au port 3306 de l'hôte
     volumes:
-      - db_data:/var/lib/mysql
+      - db_data:/var/lib/mysql  # Monte un volume pour persister les données de la base de données
 
   redis:
-    image: redis:latest
+    image: redis:latest  # Utilise l'image officielle Redis
     ports:
-      - "6379:6379"
+      - "6379:6379"  # Mappe le port 6379 du conteneur au port 6379 de l'hôte
 
 volumes:
-  db_data:
+  db_data:  # Déclare le volume db_data
