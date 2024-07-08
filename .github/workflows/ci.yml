@@ -1,109 +1,109 @@
-name: CI
+name: CI # Nom de la pipeline
 
 on:
-  push:
+  push: # Déclenche la pipeline lors d'un push
     branches:
-      - main
-  pull_request:
+      - main # Sur la branche principale
+  pull_request: # Déclenche également la pipeline lors d'une pull request
     branches:
-      - main
+      - main # Sur la branche principale
 
 jobs:
-  build:
-    runs-on: ubuntu-latest
+  build: # Job de construction du projet
+    runs-on: ubuntu-latest # Utilise la dernière version d'Ubuntu
 
     services:
-      mysql:
-        image: mysql:5.7
+      mysql: # Service MySQL pour la base de données
+        image: mysql:5.7 # Image Docker MySQL version 5.7
         env:
-          MYSQL_ROOT_PASSWORD: root
-          MYSQL_DATABASE: symfony_test
+          MYSQL_ROOT_PASSWORD: root # Mot de passe root pour MySQL
+          MYSQL_DATABASE: symfony_test # Base de données utilisée pour les tests
         ports:
-          - 3306:3306
-        options: >-
+          - 3306:3306 # Port de la base de données
+        options: >- # Options pour la vérification de la santé du service MySQL
           --health-cmd="mysqladmin ping --silent" 
           --health-interval=10s 
           --health-timeout=5s 
           --health-retries=3
 
     env:
-      DATABASE_URL: mysql://root:root@127.0.0.1:3306/symfony_test
+      DATABASE_URL: mysql://root:root@127.0.0.1:3306/symfony_test # URL de la base de données
 
     steps:
-    - name: Checkout code
-      uses: actions/checkout@v2
+      - name: Checkout code # Étape de récupération du code source
+        uses: actions/checkout@v2 # Utilise l'action checkout
 
-    - name: Set up PHP 8.2
-      uses: shivammathur/setup-php@v2
-      with:
-        php-version: '8.2'
-        extensions: mbstring, intl, pdo_mysql
-        tools: composer
+      - name: Set up PHP 8.2 # Configuration de PHP 8.2
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.2' # Version de PHP
+          extensions: mbstring, intl, pdo_mysql # Extensions PHP nécessaires
+          tools: composer # Outil Composer pour la gestion des dépendances
 
-    - name: Install Composer dependencies
-      run: rm composer.lock && composer install --prefer-dist --no-progress --no-suggest --no-interaction
+      - name: Install Composer dependencies # Installation des dépendances via Composer
+        run: rm composer.lock && composer install --prefer-dist --no-progress --no-suggest --no-interaction
 
-    - name: Create .env.test.local
-      run: |
-        echo 'DATABASE_URL="mysql://root:root@127.0.0.1:3306/symfony_test"' > .env.test.local
+      - name: Create .env.test.local # Création du fichier d'environnement pour les tests
+        run: |
+          echo 'DATABASE_URL="mysql://root:root@127.0.0.1:3306/symfony_test"' > .env.test.local
 
-    - name: Run database migrations
-      run: php bin/console
+      - name: Run database migrations # Exécution des migrations de base de données
+        run: php bin/console doctrine:migrations:migrate --no-interaction
 
-  analyze-static-code:
-    runs-on: ubuntu-latest
-    needs: build
-
-    steps:
-    - name: Checkout code
-      uses: actions/checkout@v2
-
-    - name: Set up PHP 8.2 and tools for static analysis
-      uses: shivammathur/setup-php@v2
-      with:
-        php-version: '8.2'
-        extensions: mbstring, intl, pdo_mysql
-        tools: phpstan
-
-    - name: Install dependencies
-      run:  rm composer.lock && composer install --prefer-dist --no-progress --no-suggest --no-interaction
-
-    - name: Run static analysis
-      run: vendor/bin/phpstan analyse ./public/index.php
-
-  run-unit-tests:
-    runs-on: ubuntu-latest
-    needs: build
+  analyze-static-code: # Job d'analyse statique du code
+    runs-on: ubuntu-latest # Utilise la dernière version d'Ubuntu
+    needs: build # Ce job dépend du job de construction
 
     steps:
-    - name: Checkout code
-      uses: actions/checkout@v2
+      - name: Checkout code # Étape de récupération du code source
+        uses: actions/checkout@v2
 
-    - name: Set up PHP 8.2 and PHPUnit
-      uses: shivammathur/setup-php@v2
-      with:
-        php-version: '8.2'
-        extensions: mbstring, intl, pdo_mysql
-        tools: phpunit
+      - name: Set up PHP 8.2 and tools for static analysis # Configuration de PHP et des outils d'analyse statique
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.2'
+          extensions: mbstring, intl, pdo_mysql
+          tools: phpstan # Outil d'analyse statique PHPStan
 
-    - name: Install dependencies
-      run:  rm composer.lock && composer install --prefer-dist --no-progress --no-suggest --no-interaction
+      - name: Install dependencies # Installation des dépendances via Composer
+        run: rm composer.lock && composer install --prefer-dist --no-progress --no-suggest --no-interaction
 
-    - name: Run unit tests
-      run: vendor/bin/phpunit
+      - name: Run static analysis # Exécution de l'analyse statique
+        run: vendor/bin/phpstan analyse ./public/index.php
 
-  security-scan:
-    runs-on: ubuntu-latest
-    needs: build
+  run-unit-tests: # Job d'exécution des tests unitaires
+    runs-on: ubuntu-latest # Utilise la dernière version d'Ubuntu
+    needs: build # Ce job dépend du job de construction
 
     steps:
-    - name: Checkout code
-      uses: actions/checkout@v2
+      - name: Checkout code # Étape de récupération du code source
+        uses: actions/checkout@v2
 
-    - name: Install Symfony CLI
-      run: |
-        curl -sS https://get.symfony.com/cli/installer | bash
-        sudo mv /home/runner/.symfony5/bin/symfony /usr/local/bin/symfony
+      - name: Set up PHP 8.2 and PHPUnit # Configuration de PHP et de PHPUnit
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.2'
+          extensions: mbstring, intl, pdo_mysql
+          tools: phpunit # Outil PHPUnit pour les tests unitaires
 
-    - name: Run security analysis
-      run: symfony check:security
+      - name: Install dependencies # Installation des dépendances via Composer
+        run: rm composer.lock && composer install --prefer-dist --no-progress --no-suggest --no-interaction
+
+      - name: Run unit tests # Exécution des tests unitaires
+        run: vendor/bin/phpunit
+
+  security-scan: # Job de vérification de la sécurité
+    runs-on: ubuntu-latest # Utilise la dernière version d'Ubuntu
+    needs: build # Ce job dépend du job de construction
+
+    steps:
+      - name: Checkout code # Étape de récupération du code source
+        uses: actions/checkout@v2
+
+      - name: Install Symfony CLI # Installation de l'outil en ligne de commande Symfony
+        run: |
+          curl -sS https://get.symfony.com/cli/installer | bash
+          sudo mv /home/runner/.symfony5/bin/symfony /usr/local/bin/symfony
+
+      - name: Run security analysis # Exécution de l'analyse de sécurité
+        run: symfony check:security
