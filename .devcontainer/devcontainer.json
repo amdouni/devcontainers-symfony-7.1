@@ -15,7 +15,7 @@
         "php.executablePath": "/usr/local/bin/php",
         "composer.executablePath": "/usr/bin/composer"
     },
-    "postCreateCommand": "composer install",
+    "postCreateCommand": "ls -al",
     "remoteUser": "symfony",
     "mounts": [
         "source=/var/run/docker.sock,target=/var/run/docker.sock,type=bind"
